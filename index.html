@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>For Chinny ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#ff3366;
+    --card:#fff;
+    --glass:rgba(255,255,255,0.85);
+    --success1:#22c55e; --success2:#16a34a;   /* YES gradient */
+    --danger1:#f43f5e;  --danger2:#ef4444;    /* NO gradient */
+    --heart1:#ff1e2d;   --heart2:#ff6f6f;     /* red gradient hearts */
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    display:flex;align-items:center;justify-content:center;min-height:100vh;
+    background:linear-gradient(135deg,#ffdde1 0%,#ee9ca7 100%);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  /* Side GIFs (optional local files: left.gif/right.gif; auto-hide if missing) */
+  .side-gif{
+    position:fixed; top:50%; transform:translateY(-50%);
+    width:clamp(120px,18vw,220px); opacity:.95; pointer-events:none;
+    filter:drop-shadow(0 12px 28px rgba(0,0,0,.25));
+    z-index:1;
+  }
+  .side-gif.left{ left:10px }
+  .side-gif.right{ right:10px }
+
+  .card{
+    position:relative; z-index:2;
+    width:min(740px,92vw);
+    background:var(--glass);
+    border-radius:24px; padding:30px 26px 32px;
+    box-shadow:0 24px 70px rgba(0,0,0,0.18);
+    text-align:center;
+    border:4px solid rgba(255,255,255,0.38);
+    backdrop-filter: blur(8px);
+  }
+
+  h1{color:var(--accent);margin:6px 0 10px;font-weight:700}
+  p.lead{margin:0 0 18px;color:#3f3f3f}
+
+  /* Make the song button sit on top and always clickable */
+  #playBtn{
+    appearance:none;border:0;cursor:pointer;
+    background:linear-gradient(90deg,var(--accent),#ff6b8a);
+    color:#fff;padding:14px 28px;border-radius:999px;font-weight:700;font-size:18px;
+    box-shadow:0 12px 34px rgba(255,77,109,0.22);
+    position:relative; z-index:9999; pointer-events:auto;
+  }
+
+  /* Panels */
+  .panel{display:none;margin-top:18px;align-items:center;justify-content:center;flex-direction:column}
+  .panel--visible{display:flex}
+
+  /* Gradient border around the question box */
+  .fancy-border{
+    width:100%; max-width:600px; margin:10px auto 0;
+    border-radius:18px; padding:3px; /* border thickness */
+    background:linear-gradient(135deg,#ff3a54,#ffa2b1);
+  }
+  .fancy-inner{
+    background:#fff; border-radius:16px; padding:24px 16px 20px;
+    border:2px solid rgba(0,0,0,0.06);
+  }
+  .fancy-inner h2{margin:0 0 16px;color:var(--accent);font-size:20px}
+
+  /* Buttons playground */
+  .btn-area{
+    position:relative; width:100%; height:150px; margin-top:8px;
+    overflow:hidden; /* keep buttons inside */
+  }
+  .choice{
+    position:absolute; border:none; font-weight:700; cursor:pointer;
+    border-radius:14px; box-shadow:0 8px 22px rgba(0,0,0,.10);
+    color:#fff; user-select:none; transition:transform .08s ease;
+  }
+  #yesBtn{
+    background:linear-gradient(90deg,var(--success1),var(--success2));
+    padding:12px 22px; font-size:18px;
+  }
+  #noBtn{
+    background:linear-gradient(90deg,var(--danger1),var(--danger2));
+    padding:12px 22px; font-size:18px;
+  }
+
+  /* Final message */
+  #messageDiv .messageBox{
+    background:#fff; padding:28px 22px; border-radius:16px;
+    border:2px solid rgba(0,0,0,0.06);
+    box-shadow:0 12px 34px rgba(0,0,0,.12);
+    max-width:560px;
+  }
+  #messageDiv h2{color:var(--accent); margin:0 0 10px}
+
+  /* Floating hearts */
+  .bg-hearts{
+    position:absolute; inset:0; overflow:hidden; border-radius:20px; pointer-events:none;
+  }
+  .bg-hearts span{
+    position:absolute; bottom:-40px; width:18px; height:18px;
+    background:linear-gradient(135deg,var(--heart1),var(--heart2));
+    transform:rotate(45deg);
+    animation:float 8s linear infinite;
+    opacity:.35;
+  }
+  .bg-hearts span::before,.bg-hearts span::after{
+    content:""; position:absolute; width:18px; height:18px; border-radius:50%;
+    background:inherit;
+  }
+  .bg-hearts span::before{ left:-9px; top:0 }
+  .bg-hearts span::after { top:-9px; left:0 }
+  @keyframes float{
+    0%{ transform:translateY(0) rotate(45deg) }
+    100%{ transform:translateY(-120vh) rotate(45deg) }
+  }
+
+  @media (max-width:620px){
+    .side-gif{ width:clamp(90px,22vw,160px); opacity:.85 }
+  }
+</style>
+</head>
+<body>
+  <!-- Side GIFs (optional local files) -->
+  <img id="gifLeft"  class="side-gif left"  alt="Sending love" />
+  <img id="gifRight" class="side-gif right" alt="Sending love" />
+
+  <div class="card" role="main" aria-label="Apology card">
+    <div class="bg-hearts" aria-hidden="true">
+      <span style="left:6% ; animation-delay:.0s;"></span>
+      <span style="left:18%; animation-delay:1.2s;"></span>
+      <span style="left:32%; animation-delay:.6s;"></span>
+      <span style="left:48%; animation-delay:2.1s;"></span>
+      <span style="left:64%; animation-delay:1.0s;"></span>
+      <span style="left:82%; animation-delay:1.6s;"></span>
+      <span style="left:92%; animation-delay:.3s;"></span>
+    </div>
+
+    <h1>For Chinny ❤️</h1>
+    <p class="lead">I made this for you — tap the song.</p>
+    <p>First time ko gumawa nito I hope you like it.</p>
+
+    <!-- Bulletproof clickable button -->
+    <button id="playBtn" aria-label="Play song" onclick="window.__playSongBtn && window.__playSongBtn()">
+      Tap to Hear the Song ❤️
+    </button>
+
+    <!-- Question Panel -->
+    <div id="questionPanel" class="panel">
+      <div class="fancy-border">
+        <div class="fancy-inner">
+          <h2>Do you still love me?</h2>
+          <div class="btn-area" id="btnArea">
+            <button id="yesBtn" class="choice" aria-label="Yes">Yes ❤️</button>
+            <button id="noBtn"  class="choice" aria-label="No">No 💔</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Final Message -->
+    <div id="messageDiv" class="panel">
+      <div class="messageBox">
+        <h2 id="finalTitle">I’m sorry ❤️</h2>
+        <p id="finalMessage">Sorry kung nasira ko yung trust mo sa'kin ng sobra, pero gusto ko iparating sayo na mahal kita.</p>
+        <p>I know a simple sorry couldn't fix everything but maybe just MAYBE of making an effort would change the outcome.</p>
+        <p>Wherever I am and whoever I'm with or talk to, ikaw lamang ang iniisip. I know I hurt you so bad and in this way</p>
+        <p>I want to apologize sincerely to you, this may be not enough but a step towards it. Gagawan pa kita ng laro diba?</p>
+        <p>Larong mas maganda pa kesa before sa mga ginawa ko, I am willing to learn just for you. So please don't hold grudges.</p>
+        <p>Sorry again, sobra po sorry. I want you to know that I love you.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAFARI-FRIENDLY AUDIO: put song.mp3 in the SAME folder -->
+  <audio id="song" src="song.mp3" loop preload="auto" playsinline></audio>
+
+  <script>
+    // ===== DOM =====
+    const qPanel  = document.getElementById('questionPanel');
+    const msgDiv  = document.getElementById('messageDiv');
+    const btnArea = document.getElementById('btnArea');
+    const yesBtn  = document.getElementById('yesBtn');
+    const noBtn   = document.getElementById('noBtn');
+    const song    = document.getElementById('song');
+    const gifL    = document.getElementById('gifLeft');
+    const gifR    = document.getElementById('gifRight');
+
+    // Optional local GIFs: left.gif / right.gif (auto-hide if not found)
+    function tryLoadGif(imgEl, filename){
+      const test = new Image();
+      test.onload = ()=>{ imgEl.src = filename; };
+      test.onerror = ()=>{ imgEl.style.display = 'none'; };
+      test.src = filename + '?cacheBust=' + Date.now();
+    }
+    tryLoadGif(gifL, 'left.gif');
+    tryLoadGif(gifR, 'right.gif');
+
+    // ===== Button layout + “No” dodge logic (NO OVERLAP) =====
+    let yesGrowSteps = 0; const MAX_GROW_STEPS = 8;
+
+    function sizeYes(){
+      const baseFs = 18, basePadY = 12, basePadX = 22, step = 2;
+      const g = Math.min(yesGrowSteps, MAX_GROW_STEPS);
+      const fs = baseFs + g * step;
+      const padY = basePadY + g * 1.5;
+      const padX = basePadX + g * 3;
+
+      yesBtn.style.fontSize = fs + 'px';
+      yesBtn.style.padding = padY + 'px ' + padX + 'px';
+
+      const areaRect = btnArea.getBoundingClientRect();
+      const w = yesBtn.offsetWidth, h = yesBtn.offsetHeight;
+      const left = Math.max(8, (areaRect.width - w)/2);
+      const top  = Math.max(8, (areaRect.height - h)/2);
+      yesBtn.style.left = left + 'px';
+      yesBtn.style.top  = top  + 'px';
+    }
+
+    function rect(el, parent){
+      const a = parent.getBoundingClientRect();
+      const b = el.getBoundingClientRect();
+      return { left:b.left-a.left, top:b.top-a.top, right:b.right-a.left, bottom:b.bottom-a.top, width:b.width, height:b.height };
+    }
+    function overlap(r1, r2){
+      return !(r1.right <= r2.left || r1.left >= r2.right || r1.bottom <= r2.top || r1.top >= r2.bottom);
+    }
+
+    function placeInitial(){
+      sizeYes(); // centers YES
+      const areaRect = btnArea.getBoundingClientRect();
+      const yRect = rect(yesBtn, btnArea);
+      const nW = noBtn.offsetWidth, nH = noBtn.offsetHeight;
+      let x = Math.min(areaRect.width - nW - 8, yRect.right + 18);
+      if(x < 8) x = areaRect.width - nW - 8;
+      const y = Math.max(8, (areaRect.height - nH)/2);
+      noBtn.style.left = x + 'px';
+      noBtn.style.top  = y + 'px';
+    }
+
+    function moveNo(){
+      yesGrowSteps++; sizeYes();
+      const areaRect = btnArea.getBoundingClientRect();
+      const yRect = rect(yesBtn, btnArea);
+      const nW = noBtn.offsetWidth, nH = noBtn.offsetHeight;
+
+      const padding = 8;
+      const maxX = Math.max(padding, areaRect.width - nW - padding);
+      const maxY = Math.max(padding, areaRect.height - nH - padding);
+
+      let tries = 0, placed = false, newX = 0, newY = 0;
+      while(tries < 250){
+        newX = padding + Math.random() * (maxX - padding);
+        newY = padding + Math.random() * (maxY - padding);
+        const nRect = { left:newX, top:newY, right:newX+nW, bottom:newY+nH, width:nW, height:nH };
+        if(!overlap(nRect, yRect)){ placed = true; break; }
+        tries++;
+      }
+      if(!placed){
+        const putRight = yRect.left < areaRect.width/2;
+        newX = putRight ? (areaRect.width - nW - padding) : padding;
+        newY = padding;
+      }
+      noBtn.style.left = newX + 'px';
+      noBtn.style.top  = newY + 'px';
+    }
+
+    // ===== Bulletproof Play Button (works even if inline or overlayed) =====
+    window.__playSongBtn = async function () {
+      const btn = document.getElementById('playBtn');
+      if (btn) btn.style.display = 'none';
+
+      qPanel.classList.add('panel--visible');
+      const inner = qPanel.querySelector('.fancy-inner');
+      if (inner) {
+        inner.style.opacity = 0;
+        requestAnimationFrame(()=>{ inner.style.transition='opacity .35s ease'; inner.style.opacity=1; });
+      }
+
+      if (typeof placeInitial === 'function') placeInitial();
+
+      if (song) {
+        try {
+          song.muted = false; song.volume = 1.0; song.load?.();
+          await song.play();
+        } catch (e) {
+          setTimeout(()=> song.play().catch(()=>{}), 150);
+        }
+      }
+      try { console.log('[playBtn] clicked'); } catch(_) {}
+    };
+    document.getElementById('playBtn')?.addEventListener('click', window.__playSongBtn);
+
+    // NO dodges
+    noBtn.addEventListener('click', moveNo);
+
+    // YES shows message and (re)plays audio
+    yesBtn.addEventListener('click', ()=>{
+      qPanel.classList.remove('panel--visible');
+      msgDiv.classList.add('panel--visible');
+      song?.play().catch(()=>{});
+    });
+
+    // Keep layout sensible on resize
+    window.addEventListener('resize', ()=>{
+      if(qPanel.classList.contains('panel--visible')) placeInitial();
+    });
+  </script>
+</body>
+</html>
